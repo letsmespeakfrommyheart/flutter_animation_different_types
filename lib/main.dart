@@ -18,7 +18,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -41,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   late final AnimationController _avatarController;
   late final AnimationController _aroundController;
   late final AnimationController _dropDownController;
+  //the animation of the icon controller needs a different type of controller (package)
   late final AnimateIconController _iconController;
   bool dropDownRise = false;
 
@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
+    //launching avatar animation
     _avatarController.forward();
     _iconController = AnimateIconController();
     _aroundController = AnimationController(
@@ -65,6 +66,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _dropDownController.dispose();
+    _avatarController.dispose();
     _aroundController.dispose();
     super.dispose();
   }
@@ -85,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              //imlement circular animation
               RotationTransition(
                 turns: _aroundController,
                 child: Image.asset('assets/images/ball.png', height: 120),
@@ -110,6 +114,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
+                      //implement package AnimateIcons
+
                       trailing: AnimateIcons(
                         startIconColor: Colors.amber,
                         endIconColor: Colors.black,
@@ -117,11 +123,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         endIcon: Icons.arrow_upward_outlined,
                         controller: _iconController,
                         size: 20.0,
+                        //icon arrow upward - function to show additional data
                         onStartIconPress: () {
                           dropDownRise = false;
                           _dropDownController.forward();
                           return true;
                         },
+                        //icon arrow downward - function to hiding additional data
                         onEndIconPress: () {
                           dropDownRise = true;
                           _dropDownController.reverse();
@@ -133,6 +141,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                   )),
               const SizedBox(height: 10),
+              //animate additional data appearance
               SizeTransition(
                   sizeFactor: _dropDownController,
                   axis: Axis.vertical,
@@ -169,6 +178,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         ],
                       ))),
               const SizedBox(height: 10),
+              //Hero animation of avatar picture to HeroPage
               Hero(
                 tag: 'Avatar Jake',
                 child: Card(
@@ -178,6 +188,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       child: FadeTransition(
                         opacity: CurvedAnimation(
                             parent: _avatarController, curve: Curves.linear),
+                        //implement avatarview of image
                         child: AvatarView(
                           radius: 40,
                           borderColor: Colors.amber.shade300,
@@ -187,6 +198,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
+                    //buttons for transition to HeroPage & AnimatedPageRoute
                     Column(
                       children: [
                         ElevatedButton(
@@ -227,6 +239,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           ),
                           child: const Text('Show gallery',
                               style: TextStyle(color: Colors.black)),
+                          //implement Animated page Transition
                           onPressed: () {
                             Navigator.of(context).push(PageTransition(
                                 duration: const Duration(milliseconds: 800),

@@ -20,12 +20,12 @@ class HeroPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Card(
-            child: Hero(
-              tag: 'Avatar Jake',
+      body: Hero(
+        tag: 'Avatar Jake',
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Card(
               child: Image.asset('assets/images/jake.png'),
             ),
           ),
